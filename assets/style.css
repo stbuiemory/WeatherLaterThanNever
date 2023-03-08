@@ -1,29 +1,29 @@
+/* Div elements inside the fiveDay element */
+div#fiveDay div
+{
+  width: 125px;
+  color: #fff;
+  padding: 5px;
+  border-radius: 3px;
+}
 
-/* style for the black "weather dashboard" heading */
+/* Class selectors */
+.city
+{
+  cursor: pointer;
+}
+
 .title {
     height: 80px;
-    background-color: black;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, 
+        rgba(48,48,145,1) 53%, rgba(0,212,255,1) 100%);
     color: white;
     padding: 15px;
     
   }
 
-  /* style for the zip code div that holds the input search box */
   .zipCode{
     background-color:rgb(250, 246, 246);
     font-size: 18px;
-  }
-
-  /* style for the 5 Day div's */
-  div#fiveDay div
-  {
-    width: 125px;
-    color: #fff;
-    padding: 5px;
-    border-radius: 3px;
-  }
-
-  .city
-  {
-    cursor: pointer;
   }
