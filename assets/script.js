@@ -20,9 +20,9 @@ searchButton.click(function () {
   var searchInput = $(".searchInput").val();
 
   // Variable for current weather working 
-  var urlCurrent = "https://api.openweathermap.org/data/2.5/weather?q=" + searchInput + "&Appid=" + apiKey + "&units=imperial";
+  var urlCurrent = "https://api.openweathermap.org/data/2.5/weather?q=" + searchInput + "&appid=" + apiKey + "&units=imperial";
   // Variable for 5 day forecast working
-  var urlFiveDay = "https://api.openweathermap.org/data/2.5/forecast?q=" + searchInput + "&Appid=" + apiKey + "&units=imperial";
+  var urlFiveDay = "https://api.openweathermap.org/data/2.5/forecast?q=" + searchInput + "&appid=" + apiKey + "&units=imperial";
 
   if (searchInput == "") {
     console.log(searchInput);
@@ -65,7 +65,7 @@ searchButton.click(function () {
       currentTemp.append("<br>Wind Speed: " + response.wind.speed + " MPH");
 
       // UV Index URL
-      var urlUV = `https://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${response.coord.lat}&lon=${response.coord.lon}`;
+      var urlUV = `https://api.openweathermap.org/data/2.5/uvi?=${apiKey}&lat=${response.coord.lat}&lon=${response.coord.lon}`;
 
       // UV Index
       $.ajax({
@@ -81,33 +81,31 @@ searchButton.click(function () {
 });
 
         // Start call for 5-day forecast 
-        $.ajax({
-            url: urlFiveDay,
-            method: "GET"
-          }).then(function (response) {
-            // Loop through the response to get the forecast data
-            for (var i = 0; i < response.list.length; i++) {
-              // Get the forecast data for each day
-              var forecastData = response.list[i];
-              // Create a card for the forecast
-              var forecastCard = $("<div>").addClass("card");
-              // Create a card body for the forecast
-              var forecastCardBody = $("<div>").addClass("card-body");
-              // Add the date to the card body
-              var forecastDate = $("<h6>").addClass("card-title").text(moment.unix(forecastData.dt).format("MM/DD/YYYY"));
-              forecastCardBody.append(forecastDate);
-              // Add the weather icon to the card body
-              var forecastIcon = $("<img>").attr("src", "https://openweathermap.org/img/wn/" + forecastData.weather[0].icon + ".png");
-              forecastCardBody.append(forecastIcon);
-              // Add the temperature to the card body
-              var forecastTemp = $("<p>").addClass("card-text").text("Temp: " + forecastData.main.temp + " °F");
-              forecastCardBody.append(forecastTemp);
-              // Add the humidity to the card body
-              var forecastHumidity = $("<p>").addClass("card-text").text("Humidity: " + forecastData.main.humidity + "%");
-              forecastCardBody.append(forecastHumidity);
-              // Add the card body to the card
-              forecastCard.append(forecastCardBody);
-              // Add the card to the HTML
-              $("#fiveDay").append(forecastCard);
-            }
-          });
+        function fiveDayForecast(cityName) {
+  var apiKey = "2466179abae5396cbf0ee459a53acfe6";
+  var urlFiveDay = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + apiKey + "&units=imperial";
+
+  $.ajax({
+    url: urlFiveDay,
+    method: "GET",
+  }).then(function (response) {
+    $("#fiveDay").empty();
+    var data = response.list;
+    for (var i = 0; i < data.length; i++) {
+      if (data[i].dt_txt.indexOf("15:00:00") !== -1) {
+        var date = new Date(data[i].dt_txt);
+        var card = $("<div>").addClass("card bg-primary text-white");
+        var cardBody = $("<div>").addClass("card-body p-2");
+        var cityDate = $("<h5>").addClass("card-title").text(date.toLocaleDateString("en-US"));
+        var temperature = $("<p>").addClass("card-text").text("Temp: " + data[i].main.temp_max + " °F");
+        var humidity = $("<p>").addClass("card-text").text("Humidity: " + data[i].main.humidity + "%");
+
+        var image = $("<img>").attr("src", "https://openweathermap.org/img/w/" + data[i].weather[0].icon + ".png");
+
+        cardBody.append(cityDate, image, temperature, humidity);
+        card.append(cardBody);
+        $("#fiveDay").append(card);
+      }
+    }
+  });
+}
