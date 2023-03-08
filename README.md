@@ -31,7 +31,7 @@ Visit the website [here](https://stbuiemory.github.io/WeatherLaterThanNever/).
 ## ⚙️ Testing
 
 ```sh
-The website is not loading properly and will require additional testing.
+🛠️ The website is not loading properly and will require additional testing.
 ```
 
 ## 🤝 Contributors
